@@ -19,8 +19,8 @@ rsvps_table = DB.from(:rsvps)
 users_table = DB.from(:users)
 
 before do
-    # SELECT * FROM users WHERE id = cookies[:user_id]
-    @current_user = users_table.where(:id => cookies[:user_id]).to_a[0]
+    # SELECT * FROM users WHERE id = session[:user_id] OR use cookies, needs to match 
+    @current_user = users_table.where(:id => session[:user_id]).to_a[0]
     puts @current_user.inspect
 end
 
@@ -52,7 +52,7 @@ end
 get "/events/:id/rsvps/create" do
     rsvps_table.insert(:event_id => params["id"],
                        :going => params["going"],
-                       :user_id =>params["user_id"],
+                       :user_id => @current_user[:id],
                        :comments => params["comments"])
     @event = events_table.where(:id => params["id"]).to_a[0]
     view "create_rsvp"
@@ -87,7 +87,8 @@ get "/logins/create" do
         puts user.inspect
         # test the password against the one in the users table
         if user[:password] == password_entered
-            cookies[:user_id] = user[:id]
+            session[:user_id] = user[:id]
+            #or use cookies[:user_id] = user[:id]
             view "create_login"
         else
             view "create_login_failed"
