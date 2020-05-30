@@ -49,7 +49,7 @@ get "/events/:id/rsvps/new" do
 end
 
 # Receiving end of new RSVP form
-get "/events/:id/rsvps/create" do
+post "/events/:id/rsvps/create" do
     rsvps_table.insert(:event_id => params["id"],
                        :going => params["going"],
                        :user_id => @current_user[:id],
