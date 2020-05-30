@@ -32,6 +32,7 @@ end
 
 # Show a single event
 get "/events/:id" do
+    @users_table= users_table
     # SELECT * FROM events WHERE id=:id
     @event = events_table.where(:id => params["id"]).to_a[0]
     # SELECT * FROM rsvps WHERE event_id=:id
