@@ -64,7 +64,7 @@ get "/users/new" do
 end
 
 # Receiving end of new user form
-get "/users/create" do
+post "/users/create" do
     users_table.insert(:name => params["name"],
                        :email => params["email"],
                        :password => params["password"])
@@ -77,7 +77,7 @@ get "/logins/new" do
 end
 
 # Receiving end of login form
-get "/logins/create" do
+post "/logins/create" do
     puts params
     email_entered = params["email"]
     password_entered = params["password"]
